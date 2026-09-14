@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Settings · OriginalityChecker</title><link rel="stylesheet" href="/static/css/app.css"></head><body><div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">O</div><span>OriginalityChecker</span></div>
+  <nav class="nav">
+    <a href="/dashboard"><span>⌂</span><span>Dashboard</span></a>
+    <a href="/checker"><span>＋</span><span>New Check</span></a>
+    <a href="/documents"><span>▤</span><span>My Documents</span></a>
+    <a href="/reports"><span>▥</span><span>Reports</span></a>
+    <a href="/citations"><span>✓</span><span>Citations</span></a>
+    <a href="/ai-analysis"><span>✦</span><span>AI Analysis</span></a>
+    <a href="/settings"><span>⚙</span><span>Settings</span></a>
+  </nav>
+  <div class="sidebar-footer">Student workspace<br>Free test version</div>
+</aside>
+<main class="main"><header class="topbar"><strong>Settings</strong><a class="btn btn-primary" href="/checker">+ New Check</a></header><section class="content">
+<p class="eyebrow">WORKSPACE</p><h1 class="title">Settings</h1><p class="subtitle">Basic preferences for the test workspace.</p>
+<div class="card">
+<div class="setting"><div><b>Interface</b><div class="muted">Responsive student dashboard</div></div><span class="badge badge-good">Enabled</span></div>
+<div class="setting"><div><b>Payments</b><div class="muted">Payment and subscription features are disabled.</div></div><span class="badge badge-good">Off</span></div>
+<div class="setting"><div><b>Test history</b><div class="muted">Saved in this browser for Stage 1.</div></div><button class="btn btn-ghost" onclick="localStorage.removeItem('oc_reports');location.reload()">Clear history</button></div>
+</div>
+</section></main></div><script src="/static/js/app.js"></script></body></html>

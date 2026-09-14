@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reports · OriginalityChecker</title><link rel="stylesheet" href="/static/css/app.css"></head><body><div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">O</div><span>OriginalityChecker</span></div>
+  <nav class="nav">
+    <a href="/dashboard"><span>⌂</span><span>Dashboard</span></a>
+    <a href="/checker"><span>＋</span><span>New Check</span></a>
+    <a href="/documents"><span>▤</span><span>My Documents</span></a>
+    <a href="/reports"><span>▥</span><span>Reports</span></a>
+    <a href="/citations"><span>✓</span><span>Citations</span></a>
+    <a href="/ai-analysis"><span>✦</span><span>AI Analysis</span></a>
+    <a href="/settings"><span>⚙</span><span>Settings</span></a>
+  </nav>
+  <div class="sidebar-footer">Student workspace<br>Free test version</div>
+</aside>
+<main class="main"><header class="topbar"><strong>Reports</strong><a class="btn btn-primary" href="/checker">+ New Check</a></header><section class="content">
+<p class="eyebrow">ANALYSIS HISTORY</p><h1 class="title">Reports</h1><p class="subtitle">Review the high-level results from your saved checks.</p>
+<div id="reports" class="grid"></div>
+</section></main></div><script src="/static/js/app.js"></script><script>
+const r=OC.reports();document.getElementById("reports").innerHTML=r.length?r.map(x=>`<div class="card"><div class="section-head"><h2>${OC.escape(x.name)}</h2><span class="badge badge-good">${x.originality}% originality</span></div><div class="grid three"><div><span class="muted">Words</span><br><b>${x.words.toLocaleString()}</b></div><div><span class="muted">Similarity</span><br><b>${x.similarity}%</b></div><div><span class="muted">AI indicator</span><br><b>${x.ai}%</b></div></div><p class="muted">${new Date(x.date).toLocaleString()} · Citation health: ${OC.escape(x.citation)}</p></div>`).join(""):"<div class='card empty'>No reports yet.</div>";
+</script></body></html>

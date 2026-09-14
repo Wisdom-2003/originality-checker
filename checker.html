@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>New Check · OriginalityChecker</title><link rel="stylesheet" href="/static/css/app.css"></head><body><div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">O</div><span>OriginalityChecker</span></div>
+  <nav class="nav">
+    <a href="/dashboard"><span>⌂</span><span>Dashboard</span></a>
+    <a href="/checker"><span>＋</span><span>New Check</span></a>
+    <a href="/documents"><span>▤</span><span>My Documents</span></a>
+    <a href="/reports"><span>▥</span><span>Reports</span></a>
+    <a href="/citations"><span>✓</span><span>Citations</span></a>
+    <a href="/ai-analysis"><span>✦</span><span>AI Analysis</span></a>
+    <a href="/settings"><span>⚙</span><span>Settings</span></a>
+  </nav>
+  <div class="sidebar-footer">Student workspace<br>Free test version</div>
+</aside>
+<main class="main"><header class="topbar"><strong>New Check</strong><a class="btn btn-primary" href="/checker">+ New Check</a></header><section class="content">
+<p class="eyebrow">DOCUMENT ANALYSIS</p><h1 class="title">Check a document</h1><p class="subtitle">Upload your academic work and review the current analysis tools.</p>
+<div class="card">
+<div id="drop" class="drop"><h2>Drop your document here</h2><p class="muted">or choose a file from your device</p><input id="file" type="file" accept=".pdf,.docx,.txt" hidden><button class="btn btn-secondary" onclick="document.getElementById('file').click()">Choose document</button><div id="fileName" class="file-name"></div><button id="run" class="btn btn-primary" disabled>Run analysis</button><p id="status" class="muted"></p></div>
+</div>
+<div id="result" style="display:none;margin-top:18px" class="grid">
+<div class="grid stats">
+<div class="card stat"><div class="stat-label">Words</div><div id="words" class="stat-value">—</div></div>
+<div class="card stat"><div class="stat-label">Originality</div><div id="originality" class="stat-value">—</div></div>
+<div class="card stat"><div class="stat-label">Similarity</div><div id="similarity" class="stat-value">—</div></div>
+<div class="card stat"><div class="stat-label">AI indicator</div><div id="ai" class="stat-value">—</div></div>
+</div>
+<div class="grid two">
+<div class="card"><div class="section-head"><h2>Matched sources</h2><span id="sourceCount" class="badge badge-good">0 sources</span></div><div id="sources" class="list"></div></div>
+<div class="card"><div class="section-head"><h2>Citation health</h2></div><div id="citation"></div><hr><div class="section-head"><h2>AI-writing analysis</h2></div><div id="aiInfo"></div></div>
+</div></div>
+</section></main></div><script src="/static/js/app.js"></script><script>
+const input=document.getElementById("file"),run=document.getElementById("run"),drop=document.getElementById("drop");
+input.onchange=()=>{if(input.files.length){document.getElementById("fileName").textContent=input.files[0].name+" · "+OC.fileSize(input.files[0].size);run.disabled=false}};
+["dragenter","dragover"].forEach(e=>drop.addEventListener(e,x=>{x.preventDefault();drop.classList.add("drag")}));
+["dragleave","drop"].forEach(e=>drop.addEventListener(e,x=>{x.preventDefault();drop.classList.remove("drag")}));
+drop.addEventListener("drop",e=>{if(e.dataTransfer.files.length){input.files=e.dataTransfer.files;input.onchange()}});
+run.onclick=async()=>{const f=input.files[0];if(!f)return;run.disabled=true;document.getElementById("status").textContent="Analyzing…";try{const fd=new FormData();fd.append("file",f);const res=await fetch("/api/check",{method:"POST",body:fd});const d=await res.json();if(!res.ok)throw Error(d.detail||"Analysis failed");
+document.getElementById("result").style.display="block";document.getElementById("words").textContent=d.document.words.toLocaleString();document.getElementById("originality").textContent=d.originality+"%";document.getElementById("similarity").textContent=d.highest_similarity+"%";document.getElementById("ai").textContent=d.ai_writing.indicator_score+"%";document.getElementById("sourceCount").textContent=d.sources_found+" sources";document.getElementById("citation").innerHTML="<b>"+d.citation_health+"</b><p class='muted'>"+d.citation_count+" citation pattern(s) detected.</p>";
+document.getElementById("sources").innerHTML=d.matches.length?d.matches.map(s=>`<div class="source"><b>${OC.escape(s.title)}</b><span class="muted">${s.similarity}% similarity · ${OC.escape(s.url)}</span></div>`).join(""):"<div class='empty'>No significant matches in the current test corpus.</div>";
+document.getElementById("aiInfo").innerHTML=(d.ai_writing.indicators.length?d.ai_writing.indicators.map(x=>"<div>• "+OC.escape(x)+"</div>").join(""):"<div>No strong heuristic indicators detected.</div>")+"<p class='muted'>"+OC.escape(d.ai_writing.disclaimer)+"</p>";OC.saveReport(d,f);document.getElementById("status").textContent="Analysis complete."}catch(e){document.getElementById("status").textContent="Error: "+e.message}run.disabled=false};
+</script></body></html>
