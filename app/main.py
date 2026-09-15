@@ -13,6 +13,7 @@ from app.plagiarism_engine import (
     Source,
     compare_local_documents,
     calculate_report,
+    search_academic_sources,
 )
 
 
@@ -230,12 +231,25 @@ async def check_document(
     # STAGE 2A ENGINE
     # --------------------------------------------------
 
-    matches = compare_local_documents(
-        document_text=text,
-        sources=SOURCES,
-        threshold=15,
-    )
+    # --------------------------------------------------
+# ACADEMIC SOURCE RETRIEVAL
+# --------------------------------------------------
 
+academic_sources = search_academic_sources(
+    document_text=text,
+    max_queries=5,
+    results_per_query=5,
+)
+
+# Combine temporary local sources with
+# retrieved academic sources.
+all_sources = SOURCES + academic_sources
+
+matches = compare_local_documents(
+    document_text=text,
+    sources=all_sources,
+    threshold=15,
+)
     report = calculate_report(
         document_text=text,
         matches=matches,
@@ -357,10 +371,16 @@ async def check_document(
         },
 
         "search_status": {
-            "local_engine": "complete",
-            "private_documents": "next",
-            "academic_search": "next",
-            "web_search": "next",
-            "semantic_embeddings": "next",
-        },
+    "local_engine": "complete",
+    "private_documents": "next",
+    "academic_search": "complete",
+    "web_search": "next",
+    "semantic_embeddings": "next",
+},
+
+"academic_search": {
+    "provider": "OpenAlex",
+    "sources_retrieved": len(academic_sources),
+    "queries_generated": 5,
+},
 }
