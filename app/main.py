@@ -20,7 +20,9 @@ app.add_middleware(
 
 BASE = Path(__file__).resolve().parent.parent
 STATIC = BASE / "static"
+from fastapi.staticfiles import StaticFiles
 
+app.mount("/static", StaticFiles(directory=STATIC), name="static")
 SOURCES = [
     {
         "title": "Example Academic Writing Source",
