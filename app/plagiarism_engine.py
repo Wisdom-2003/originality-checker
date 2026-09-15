@@ -1,4 +1,6 @@
-import re
+import json
+import urllib.parse
+import urllib.requestimport re
 import math
 from dataclasses import dataclass
 from collections import Counter
@@ -398,3 +400,204 @@ def calculate_report(
             for match in matches
         ]
 }
+# ==========================================================
+# OPENALEX ACADEMIC SEARCH
+# ==========================================================
+
+OPENALEX_API = "https://api.openalex.org/works"
+
+
+def build_academic_queries(text: str, max_queries: int = 5):
+    """
+    Creates focused academic search queries from a document.
+    """
+
+    passages = segment_passages(
+        text,
+        min_words=30,
+        max_words=80
+    )
+
+    queries = []
+
+    for passage in passages[:max_queries]:
+
+        cleaned = normalize(passage)
+
+        # Remove very common words
+        stopwords = {
+            "the", "and", "that", "this", "with",
+            "from", "have", "which", "their",
+            "there", "about", "into", "than",
+            "were", "been", "also", "they",
+            "these", "those", "using", "such"
+        }
+
+        tokens = [
+            word
+            for word in cleaned.split()
+            if word not in stopwords
+            and len(word) > 3
+        ]
+
+        query = " ".join(tokens[:14])
+
+        if query and query not in queries:
+            queries.append(query)
+
+    return queries
+
+
+def search_openalex(
+    query: str,
+    per_page: int = 5
+):
+    """
+    Search OpenAlex for scholarly works.
+
+    Returns lightweight Source objects that can
+    be passed into the Stage 2A comparison engine.
+    """
+
+    if not query.strip():
+        return []
+
+    params = {
+        "search": query,
+        "per-page": min(per_page, 10),
+    }
+
+    url = (
+        OPENALEX_API
+        + "?"
+        + urllib.parse.urlencode(params)
+    )
+
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent":
+                "OriginalityChecker/2.0 "
+                "(academic similarity research)"
+        }
+    )
+
+    try:
+
+        with urllib.request.urlopen(
+            request,
+            timeout=12
+        ) as response:
+
+            payload = json.loads(
+                response.read().decode(
+                    "utf-8"
+                )
+            )
+
+    except Exception:
+        return []
+
+    sources = []
+
+    for work in payload.get(
+        "results",
+        []
+    ):
+
+        title = (
+            work.get("display_name")
+            or work.get("title")
+            or "Untitled academic work"
+        )
+
+        work_url = (
+            work.get("doi")
+            or work.get("primary_location", {})
+                .get("landing_page_url")
+            or work.get("id")
+            or ""
+        )
+
+        abstract = ""
+
+        inverted_index = (
+            work.get("abstract_inverted_index")
+        )
+
+        if inverted_index:
+
+            words_by_position = []
+
+            for word, positions in inverted_index.items():
+
+                for position in positions:
+                    words_by_position.append(
+                        (position, word)
+                    )
+
+            words_by_position.sort(
+                key=lambda x: x[0]
+            )
+
+            abstract = " ".join(
+                word
+                for _, word
+                in words_by_position
+            )
+
+        if not abstract:
+            abstract = title
+
+        sources.append(
+            Source(
+                title=title,
+                url=work_url,
+                text=abstract,
+                source_type="academic"
+            )
+        )
+
+    return sources
+
+
+def search_academic_sources(
+    document_text: str,
+    max_queries: int = 5,
+    results_per_query: int = 5
+):
+    """
+    Runs multiple OpenAlex searches and removes
+    duplicate academic works.
+    """
+
+    queries = build_academic_queries(
+        document_text,
+        max_queries=max_queries
+    )
+
+    all_sources = []
+
+    seen = set()
+
+    for query in queries:
+
+        results = search_openalex(
+            query,
+            per_page=results_per_query
+        )
+
+        for source in results:
+
+            key = (
+                source.url
+                or source.title.lower()
+            )
+
+            if key in seen:
+                continue
+
+            seen.add(key)
+            all_sources.append(source)
+
+    return all_sourcesa
