@@ -37,7 +37,33 @@ SOURCES = [
 @app.get("/")
 def home():
     return FileResponse(STATIC / "dashboard.html")
+@app.get("/dashboard")
+def dashboard():
+    return FileResponse(STATIC / "dashboard.html")
 
+@app.get("/checker")
+def checker():
+    return FileResponse(STATIC / "checker.html")
+
+@app.get("/documents")
+def documents():
+    return FileResponse(STATIC / "documents.html")
+
+@app.get("/reports")
+def reports():
+    return FileResponse(STATIC / "reports.html")
+
+@app.get("/citations")
+def citations():
+    return FileResponse(STATIC / "citations.html")
+
+@app.get("/ai-analysis")
+def ai_analysis():
+    return FileResponse(STATIC / "ai-analysis.html")
+
+@app.get("/settings")
+def settings():
+    return FileResponse(STATIC / "settings.html")
 @app.get("/health")
 def health():
     return {"status": "ok"}
