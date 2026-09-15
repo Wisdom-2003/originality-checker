@@ -1,43 +1,303 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard · OriginalityChecker</title><link rel="stylesheet" href="/static/css/app.css"></head><body><div class="app">
-<aside class="sidebar">
-  <div class="brand"><div class="brand-mark">O</div><span>OriginalityChecker</span></div>
-  <nav class="nav">
-    <a href="/dashboard"><span>⌂</span><span>Dashboard</span></a>
-    <a href="/checker"><span>＋</span><span>New Check</span></a>
-    <a href="/documents"><span>▤</span><span>My Documents</span></a>
-    <a href="/reports"><span>▥</span><span>Reports</span></a>
-    <a href="/citations"><span>✓</span><span>Citations</span></a>
-    <a href="/ai-analysis"><span>✦</span><span>AI Analysis</span></a>
-    <a href="/settings"><span>⚙</span><span>Settings</span></a>
-  </nav>
-  <div class="sidebar-footer">Student workspace<br>Free test version</div>
-</aside>
-<main class="main"><header class="topbar"><strong>Dashboard</strong><a class="btn btn-primary" href="/checker">+ New Check</a></header><section class="content">
-<div class="hero">
-  <div class="kicker">ACADEMIC ORIGINALITY WORKSPACE</div>
-  <h1 class="title">Check your work with confidence.</h1>
-  <p>Upload a document to review similarity, citation health and AI-writing indicators from one workspace.</p>
-  <a class="btn" href="/checker">Start a new check</a>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dashboard · OriginalityChecker</title>
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">O</div>
+      <span>OriginalityChecker</span>
+    </div>
+
+    <nav class="nav">
+      <a href="/dashboard">
+        <span>⌂</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="/checker">
+        <span>＋</span>
+        <span>New Check</span>
+      </a>
+
+      <a href="/documents">
+        <span>▤</span>
+        <span>My Documents</span>
+      </a>
+
+      <a href="/reports">
+        <span>▥</span>
+        <span>Reports</span>
+      </a>
+
+      <a href="/citations">
+        <span>✓</span>
+        <span>Citations</span>
+      </a>
+
+      <a href="/ai-analysis">
+        <span>✦</span>
+        <span>AI Analysis</span>
+      </a>
+
+      <a href="/settings">
+        <span>⚙</span>
+        <span>Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      Student workspace<br>
+      Free test version
+    </div>
+  </aside>
+
+
+  <main class="main">
+
+    <header class="topbar">
+      <strong>Dashboard</strong>
+      <a class="btn btn-primary" href="/checker">
+        + New Check
+      </a>
+    </header>
+
+
+    <section class="content">
+
+      <div class="hero">
+        <div class="kicker">
+          ACADEMIC ORIGINALITY WORKSPACE
+        </div>
+
+        <h1 class="title">
+          Check your work with confidence.
+        </h1>
+
+        <p>
+          Upload a document to review similarity,
+          citation health and AI-writing indicators
+          from one workspace.
+        </p>
+
+        <a class="btn" href="/checker">
+          Start a new check
+        </a>
+      </div>
+
+
+      <div class="grid stats" style="margin-top:18px">
+
+        <div class="card stat">
+          <div class="stat-label">
+            Documents checked
+          </div>
+
+          <div class="stat-value" id="docs">
+            0
+          </div>
+
+          <div class="trend">
+            Your workspace
+          </div>
+        </div>
+
+
+        <div class="card stat">
+          <div class="stat-label">
+            Average originality
+          </div>
+
+          <div class="stat-value" id="orig">
+            —
+          </div>
+
+          <div class="trend">
+            Based on saved reports
+          </div>
+        </div>
+
+
+        <div class="card stat">
+          <div class="stat-label">
+            Average similarity
+          </div>
+
+          <div class="stat-value" id="sim">
+            —
+          </div>
+
+          <div class="trend">
+            Based on saved reports
+          </div>
+        </div>
+
+
+        <div class="card stat">
+          <div class="stat-label">
+            AI indicator
+          </div>
+
+          <div class="stat-value" id="ai">
+            —
+          </div>
+
+          <div class="trend">
+            Probabilistic signal
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="grid two" style="margin-top:18px">
+
+        <div class="card">
+
+          <div class="section-head">
+            <h2>Recent checks</h2>
+            <a href="/reports">View all</a>
+          </div>
+
+          <div id="recent" class="empty">
+            No checks yet. Start by uploading a document.
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="section-head">
+            <h2>What you can check</h2>
+          </div>
+
+          <div class="list">
+
+            <div>
+              🔎
+              <b>Similarity</b>
+              <br>
+              <span class="muted">
+                Review matching passages and sources.
+              </span>
+            </div>
+
+
+            <div>
+              ✦
+              <b>AI-writing indicators</b>
+              <br>
+              <span class="muted">
+                See probabilistic style signals.
+              </span>
+            </div>
+
+
+            <div>
+              ✓
+              <b>Citations</b>
+              <br>
+              <span class="muted">
+                Review citation patterns and health.
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
 </div>
-<div class="grid stats" style="margin-top:18px">
-  <div class="card stat"><div class="stat-label">Documents checked</div><div class="stat-value" id="docs">0</div><div class="trend">Your workspace</div></div>
-  <div class="card stat"><div class="stat-label">Average originality</div><div class="stat-value" id="orig">—</div><div class="trend">Based on saved reports</div></div>
-  <div class="card stat"><div class="stat-label">Average similarity</div><div class="stat-value" id="sim">—</div><div class="trend">Based on saved reports</div></div>
-  <div class="card stat"><div class="stat-label">AI indicator</div><div class="stat-value" id="ai">—</div><div class="trend">Probabilistic signal</div></div>
-</div>
-<div class="grid two" style="margin-top:18px">
-  <div class="card"><div class="section-head"><h2>Recent checks</h2><a href="/reports">View all</a></div><div id="recent" class="empty">No checks yet. Start by uploading a document.</div></div>
-  <div class="card"><div class="section-head"><h2>What you can check</h2></div><div class="list">
-    <div>🔎 <b>Similarity</b><br><span class="muted">Review matching passages and sources.</span></div>
-    <div>✦ <b>AI-writing indicators</b><br><span class="muted">See probabilistic style signals.</span></div>
-    <div>✓ <b>Citations</b><br><span class="muted">Review citation patterns and health.</span></div>
-  </div></div>
-</div>
-</section></main></div><script src="/static/js/app.js"></script><script>
-const r=OC.reports(); document.getElementById("docs").textContent=r.length;
-if(r.length){const avg=k=>Math.round(r.reduce((a,x)=>a+(Number(x[k])||0),0)/r.length*10)/10;
-document.getElementById("orig").textContent=avg("originality")+"%";
-document.getElementById("sim").textContent=avg("similarity")+"%";
-document.getElementById("ai").textContent=avg("ai")+"%";
-document.getElementById("recent").innerHTML=r.slice(0,5).map(x=>`<div class="source"><b>${OC.escape(x.name)}</b><span class="muted">${x.words.toLocaleString()} words · ${x.originality}% originality · ${new Date(x.date).toLocaleDateString()}</span></div>`).join("")}
-</script></body></html>
+
+
+<script src="/static/js/app.js"></script>
+
+<script>
+(function () {
+
+  if (typeof OC === "undefined") {
+    return;
+  }
+
+  const r = OC.reports();
+
+  const docs = document.getElementById("docs");
+  const orig = document.getElementById("orig");
+  const sim = document.getElementById("sim");
+  const ai = document.getElementById("ai");
+  const recent = document.getElementById("recent");
+
+  if (!docs || !orig || !sim || !ai || !recent) {
+    return;
+  }
+
+  docs.textContent = r.length;
+
+  if (!r.length) {
+    return;
+  }
+
+  const avg = function (key) {
+    return Math.round(
+      r.reduce(function (total, item) {
+        return total + (Number(item[key]) || 0);
+      }, 0) / r.length * 10
+    ) / 10;
+  };
+
+  orig.textContent = avg("originality") + "%";
+  sim.textContent = avg("similarity") + "%";
+  ai.textContent = avg("ai") + "%";
+
+  recent.innerHTML = r
+    .slice(0, 5)
+    .map(function (x) {
+
+      const name =
+        typeof OC.escape === "function"
+          ? OC.escape(x.name || "Untitled document")
+          : String(x.name || "Untitled document");
+
+      const words =
+        Number(x.words || 0).toLocaleString();
+
+      const originality =
+        Number(x.originality || 0);
+
+      const date =
+        x.date
+          ? new Date(x.date).toLocaleDateString()
+          : "";
+
+      return `
+        <div class="source">
+          <b>${name}</b>
+          <span class="muted">
+            ${words} words ·
+            ${originality}% originality ·
+            ${date}
+          </span>
+        </div>
+      `;
+
+    })
+    .join("");
+
+})();
+</script>
+
+</body>
+</html>
