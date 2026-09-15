@@ -36,7 +36,7 @@ SOURCES = [
 
 @app.get("/")
 def home():
-    return FileResponse(STATIC / "index.html")
+    return FileResponse(STATIC / "dashboard.html")
 
 @app.get("/health")
 def health():
