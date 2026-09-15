@@ -35,7 +35,20 @@ SOURCES = [
         "text": "Research methods provide systematic procedures for collecting, analyzing, and interpreting information to answer a research question."
     }
 ]
-
+@app.get("/debug-file")
+def debug_file():
+    dashboard = STATIC / "dashboard.html"
+    return {
+        "static_path": str(STATIC),
+        "dashboard_path": str(dashboard),
+        "exists": dashboard.exists(),
+        "size": dashboard.stat().st_size if dashboard.exists() else 0,
+        "first_100_chars": (
+            dashboard.read_text(encoding="utf-8", errors="ignore")[:100]
+            if dashboard.exists()
+            else "FILE NOT FOUND"
+        )
+    }
 @app.get("/")
 def home():
     return FileResponse(STATIC / "dashboard.html")
